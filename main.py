@@ -3,7 +3,6 @@ import json
 from bs4 import BeautifulSoup
 
 
-
 # Taking first paragraph from wikiPEDIA
 url_wikipedia = 'https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum'
 
@@ -29,7 +28,31 @@ for image in html_doc_wikimedia.find_all('li', class_ = 'gallerybox'):
         list_images.append(images_links)
 
 
+
+#  Info about Images
+img_url = "https://commons.wikimedia.org/wiki/"
+end_points = ['4-4-0 Inyo.jpg', 'AKC 2014 pics7 019.jpg']
+
+for end_point in end_points:
+    images_url = f'{img_url} + {end_points}'
+
+
+r_images = requests.get(images_url)
+soup_images = BeautifulSoup(r_images.text, 'html.parser')
+html_doc_images = soup_images.find_all('table', class_ = 'fileinfotpl-type-information toccolours vevent mw-content-ltr' )
+
+for image in html_doc_images.find_all('tbody'):
+    rows = image.find('tr')
+    for row in rows:
+        image_description = row.find('td', class_ = 'description')
+        print(image_description)
         
+
+
+
+
+
+
 # Taking all information about event from API
 response_museum = requests.get('https://nominatim.openstreetmap.org/details.php?osmtype=W&osmid=407063554&class=tourism&addressdetails=1&hierarchy=0&group_hierarchy=1&format=json')
 
@@ -45,35 +68,15 @@ zip = data['addresstags']['postcode']
 
 # Put all information I got, into the dict
 all_info = {
-    'activity_name': experience_name,
+    'experience_name': experience_name,
     'city' : city,
     'state' : state,
     'zip': zip,
     'address1': address_1,
     'address2' : address_2,
     'wikipedia' : url_wikipedia,
-    'experience description' : paragraph,
+    'experience_description' : paragraph,
     'experience_images' : list_images,
 }
 
 all_info_json = json.dumps(all_info)
-
-
-
-
-
-
-# Info about Images
-# Wasn't able to figure out 
-
-
-# img_url = "https://commons.wikimedia.org/wiki/File:4-4-0_Inyo.jpg"
-
-# res = session.get(img_url)
-
-# img_data = response.html.find('tr')[0]
-
-# for row in img_data.find('td'):
-#     img_description = row.text
-#     print(img_description)
-
