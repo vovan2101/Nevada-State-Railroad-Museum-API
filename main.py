@@ -1,7 +1,7 @@
 import requests
 import json
 from bs4 import BeautifulSoup
-from array import array
+
 
 
 # Taking first paragraph from wikiPEDIA
@@ -15,7 +15,6 @@ paragraph = html_doc_wikipedia.find('p').text
 
 
 # Taking all images links from wikiMEDIA
-# This one is working by it self, but when I added to my DICT, it shows only ONE picture link instead all of it.
 url_wikimedia = "https://commons.wikimedia.org/wiki/Category:Nevada_State_Railroad_Museum"
 
 r_wikimedia = requests.get(url_wikimedia)
@@ -31,7 +30,6 @@ for image in html_doc_wikimedia.find_all('li', class_ = 'gallerybox'):
 
 
         
-
 # Taking all information about event from API
 response_museum = requests.get('https://nominatim.openstreetmap.org/details.php?osmtype=W&osmid=407063554&class=tourism&addressdetails=1&hierarchy=0&group_hierarchy=1&format=json')
 
@@ -45,6 +43,7 @@ state = data['addresstags']['state']
 zip = data['addresstags']['postcode']
 
 
+# Put all information I got, into the dict
 all_info = {
     'activity_name': experience_name,
     'city' : city,
@@ -57,9 +56,7 @@ all_info = {
     'experience_images' : list_images,
 }
 
-
 all_info_json = json.dumps(all_info)
-print(all_info_json)
 
 
 
