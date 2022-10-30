@@ -1,3 +1,4 @@
+from symbol import parameters
 import requests
 import json
 from requests_html import HTMLSession
@@ -6,19 +7,15 @@ from urllib import response
 
 
 # Taking first paragraph from wikiPEDIA
-# This one is not working properly anymore like it use to. I don't know what happen to it. Use to give me first paragraph from wiki. Now it says "This category has the following 4 subcategories, out of 4 total".
+url = 'https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum'
 
-session = HTMLSession()
+r = requests.get(url)
+soup = BeautifulSoup(r.text, 'html.parser')
+html_doc = soup.find('div', class_ = 'mw-body-content mw-content-ltr')
+paragraph = html_doc.find('p').text
+print(paragraph)
 
-wikipedia_url = "https://commons.wikimedia.org/wiki/Category:Nevada_State_Railroad_Museum"
 
-response = session.get(wikipedia_url)
-
-wikipedia_data = response.html.find('p')[0]
-
-for row in wikipedia_data.find('p'):
-    paragraph = row.text
-    # print(paragraph)
 
 
 
@@ -59,14 +56,14 @@ all_info ={
     'zip': zip,
     'address1': address_1,
     'address2' : address_2,
-    'wikipedia' : wikipedia_url,
-    'experience description' : paragraph,
+    # 'wikipedia' : wikipedia_url,
+    # 'experience description' : paragraph,
     'experience_images' : [images_links]
 }
 
 
 all_info_json = json.dumps(all_info)
-print(all_info)
+# print(all_info)
 
 # Info about Images
 # Wasn't able to figure out 
