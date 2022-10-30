@@ -1,43 +1,36 @@
-from symbol import parameters
 import requests
 import json
-from requests_html import HTMLSession
 from bs4 import BeautifulSoup
-from urllib import response
+
 
 
 # Taking first paragraph from wikiPEDIA
-url = 'https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum'
+url_wikipedia = 'https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum'
 
-r = requests.get(url)
-soup = BeautifulSoup(r.text, 'html.parser')
-html_doc = soup.find('div', class_ = 'mw-body-content mw-content-ltr')
-paragraph = html_doc.find('p').text
-print(paragraph)
-
-
+r_wikipedia = requests.get(url_wikipedia)
+soup_wikipedia = BeautifulSoup(r_wikipedia.text, 'html.parser')
+html_doc_wikipedia = soup_wikipedia.find('div', class_ = 'mw-body-content mw-content-ltr')
+paragraph = html_doc_wikipedia.find('p').text
 
 
 
 # Taking all images links from wikiMEDIA
-# This one is working good by it self, but when I added to my DICT, it shows only one picture link instead all of it.
+# This one is working by it self, but when I added to my DICT, it shows only ONE picture link instead all of it.
+url_wikimedia = "https://commons.wikimedia.org/wiki/Category:Nevada_State_Railroad_Museum"
 
-wikimedia_url = "https://commons.wikimedia.org/wiki/Category:Nevada_State_Railroad_Museum"
+r_wikimedia = requests.get(url_wikimedia)
+soup_wikimedia = BeautifulSoup(r_wikimedia.text, 'html.parser')
+html_doc_wikimedia = soup_wikimedia.find('ul', class_ ='gallery mw-gallery-traditional')
 
+for image in html_doc_wikimedia.find_all('li', class_ = 'gallerybox'):
+    rows = image.find('div')
+    for link in rows.find('a'):
+        images_links = link.get('src')
 
-req = requests.get(wikimedia_url)
-
-html = BeautifulSoup(req.text, 'html.parser')
-
-img_tag = html.find_all('img')
-for image in img_tag:
-    images_links = image['src']
-    # print(images_links)
         
 
-# Taking all information about event
+# Taking all information about event from API
 response_museum = requests.get('https://nominatim.openstreetmap.org/details.php?osmtype=W&osmid=407063554&class=tourism&addressdetails=1&hierarchy=0&group_hierarchy=1&format=json')
-
 
 data = json.loads(response_museum.text)
 
@@ -56,14 +49,19 @@ all_info ={
     'zip': zip,
     'address1': address_1,
     'address2' : address_2,
-    # 'wikipedia' : wikipedia_url,
-    # 'experience description' : paragraph,
-    'experience_images' : [images_links]
+    'wikipedia' : url_wikipedia,
+    'experience description' : paragraph,
+    'experience_images' : [images_links,]
 }
 
 
 all_info_json = json.dumps(all_info)
-# print(all_info)
+print(all_info_json)
+
+
+
+
+
 
 # Info about Images
 # Wasn't able to figure out 
