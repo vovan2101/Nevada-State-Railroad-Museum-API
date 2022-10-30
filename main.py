@@ -1,7 +1,7 @@
 import requests
 import json
 from bs4 import BeautifulSoup
-
+from array import array
 
 
 # Taking first paragraph from wikiPEDIA
@@ -22,10 +22,13 @@ r_wikimedia = requests.get(url_wikimedia)
 soup_wikimedia = BeautifulSoup(r_wikimedia.text, 'html.parser')
 html_doc_wikimedia = soup_wikimedia.find('ul', class_ ='gallery mw-gallery-traditional')
 
+list_images = []
 for image in html_doc_wikimedia.find_all('li', class_ = 'gallerybox'):
     rows = image.find('div')
     for link in rows.find('a'):
         images_links = link.get('src')
+        list_images.append(images_links)
+
 
         
 
@@ -42,7 +45,7 @@ state = data['addresstags']['state']
 zip = data['addresstags']['postcode']
 
 
-all_info ={
+all_info = {
     'activity_name': experience_name,
     'city' : city,
     'state' : state,
@@ -51,7 +54,7 @@ all_info ={
     'address2' : address_2,
     'wikipedia' : url_wikipedia,
     'experience description' : paragraph,
-    'experience_images' : [images_links,]
+    'experience_images' : list_images,
 }
 
 
