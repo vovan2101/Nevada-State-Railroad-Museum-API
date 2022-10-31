@@ -1,6 +1,15 @@
+from flask import Flask
+from flask import jsonify
 import requests
 import json
 from bs4 import BeautifulSoup
+
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return jsonify(all_info)
 
 
 # Taking first paragraph from wikiPEDIA
