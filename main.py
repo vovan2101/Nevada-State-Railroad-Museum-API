@@ -50,8 +50,8 @@ for image in html_doc_images.find_all('td', class_ ='description'):
 
 
 # Lisens of images
-r_images = requests.get(images_url)
-soup_licens = BeautifulSoup(r_images.text, 'html.parser')  
+r_images_licens = requests.get(images_url)
+soup_licens = BeautifulSoup(r_images_licens.text, 'html.parser')  
 html_doc_licens = soup_licens.find('div', class_ = 'rlicense-declaration')
 
 for licens in html_doc_licens.find_all('a', class_ = 'extiw'):
@@ -87,4 +87,4 @@ all_info = {
 }
 
 all_info_json = json.dumps(all_info)
-print(all_info_json)
+# print(all_info_json)
