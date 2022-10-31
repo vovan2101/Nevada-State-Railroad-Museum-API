@@ -30,27 +30,21 @@ for image in html_doc_wikimedia.find_all('li', class_ = 'gallerybox'):
 
 
 #  Info about Images
-img_url = "https://commons.wikimedia.org/wiki/"
-end_points = ['4-4-0 Inyo.jpg', 'AKC 2014 pics7 019.jpg']
+img_url = "https://commons.wikimedia.org/wiki/File:"
+end_points = ['AKC 2014 pics7 019.jpg', '4-4-0 Inyo.jpg']
 
 for end_point in end_points:
-    images_url = f'{img_url} + {end_points}'
+    images_url = f'{img_url}{end_point}'
 
 
 r_images = requests.get(images_url)
 soup_images = BeautifulSoup(r_images.text, 'html.parser')
-html_doc_images = soup_images.find_all('table', class_ = 'fileinfotpl-type-information toccolours vevent mw-content-ltr' )
+html_doc_images = soup_images.find('tr')
 
-for image in html_doc_images.find_all('tbody'):
-    rows = image.find('tr')
-    for row in rows:
-        image_description = row.find('td', class_ = 'description')
-        print(image_description)
+for image in html_doc_images.find_all('td', class_ ='description'):
+    image_description = image.find('div', class_ = 'description mw-content-ltr en').text[10:]
+    # print(image_description)
         
-
-
-
-
 
 
 # Taking all information about event from API
@@ -77,6 +71,8 @@ all_info = {
     'wikipedia' : url_wikipedia,
     'experience_description' : paragraph,
     'experience_images' : list_images,
+    'images_description' : image_description,
 }
 
 all_info_json = json.dumps(all_info)
+print(all_info_json)
