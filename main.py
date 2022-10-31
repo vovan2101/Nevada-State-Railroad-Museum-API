@@ -12,7 +12,6 @@ html_doc_wikipedia = soup_wikipedia.find('div', class_ = 'mw-body-content mw-con
 paragraph = html_doc_wikipedia.find('p').text
 
 
-
 # Taking all images links from wikiMEDIA
 url_wikimedia = "https://commons.wikimedia.org/wiki/Category:Nevada_State_Railroad_Museum"
 
@@ -28,8 +27,7 @@ for image in html_doc_wikimedia.find_all('li', class_ = 'gallerybox'):
         list_images.append(images_links)
 
 
-
-#  Info about Images
+#  description of images
 img_url = "https://commons.wikimedia.org/wiki/File:"
 end_points = ['AKC 2014 pics7 019.jpg', '4-4-0 Inyo.jpg', 'Dual_Coupling_Link_%26_Pin_with_Knuckle_Coupler.jpg', 'Engine_22,_2.JPG',
 'Engine_22,_3.JPG', 'Engine 22.JPG', 'Locomotive 27.jpg', 'McKeen_Motor_Car_-22_Restoration.jpg', 'Nevada_State_Museum_at_Carson_City_NV_-_panoramio.jpg', 
@@ -47,11 +45,17 @@ r_images = requests.get(images_url)
 soup_images = BeautifulSoup(r_images.text, 'html.parser')
 html_doc_images = soup_images.find('tr')
 
-
 for image in html_doc_images.find_all('td', class_ ='description'):
     image_description = image.find('div', class_ = 'description mw-content-ltr en').text[10:]
-    print(image_description)
-        
+
+
+# Lisens of images
+r_images = requests.get(images_url)
+soup_licens = BeautifulSoup(r_images.text, 'html.parser')  
+html_doc_licens = soup_licens.find('div', class_ = 'rlicense-declaration')
+
+for licens in html_doc_licens.find_all('a', class_ = 'extiw'):
+    images_lincens = licens.text
 
 
 # Taking all information about event from API
@@ -77,9 +81,10 @@ all_info = {
     'address2' : address_2,
     'wikipedia' : url_wikipedia,
     'experience_description' : paragraph,
-    'experience_images' : list_images,
+    'images_licens' : images_lincens,
     'images_description' : image_description,
+    'experience_images' : list_images,
 }
 
 all_info_json = json.dumps(all_info)
-# print(all_info_json)
+print(all_info_json)
