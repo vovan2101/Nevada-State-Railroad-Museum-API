@@ -16,9 +16,8 @@ def index():
 url_wikipedia = 'https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum'
 
 r_wikipedia = requests.get(url_wikipedia)
-soup_wikipedia = BeautifulSoup(r_wikipedia.text, 'html.parser')
-html_doc_wikipedia = soup_wikipedia.find('div', class_ = 'mw-body-content mw-content-ltr')
-paragraph = html_doc_wikipedia.find('p').text
+soup_wikipedia = BeautifulSoup(r_wikipedia.text, 'lxml')
+paragraph = soup_wikipedia.find('p').text
 
 
 # Taking all images links from wikiMEDIA
@@ -95,5 +94,5 @@ all_info = {
     'experience_images' : list_images,
 }
 
-all_info_json = json.dumps(all_info)
-# print(all_info_json)
+with open('all_info_json', 'w') as file:
+    json.dump(all_info, file, indent=4, ensure_ascii=False)
