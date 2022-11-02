@@ -49,16 +49,12 @@ r_images = requests.get(images_url)
 soup_images = BeautifulSoup(r_images.text, 'lxml')
 
 images_description = soup_images.find(class_ = 'description mw-content-ltr en').text[10:]
-print(images_description)
 
 
 # Lisens of images
 r_images_licens = requests.get(images_url)
-soup_licens = BeautifulSoup(r_images_licens.text, 'html.parser')  
-html_doc_licens = soup_licens.find('div', class_ = 'rlicense-declaration')
-
-for licens in html_doc_licens.find_all('a', class_ = 'extiw'):
-    images_lincens = licens.text
+soup_licens = BeautifulSoup(r_images_licens.text, 'lxml')  
+images_lincens = soup_licens.find(class_ = 'rlicense-declaration').text
 
 
 # Taking all information about event from API
