@@ -48,20 +48,24 @@ for end_point in end_points:
     r_images = requests.get(images_url)
     soup_images = BeautifulSoup(r_images.text, 'lxml')
     description_list = []
+
     try:
         images_div = soup_images.find('td', class_ = 'description')
-        for image in images_div.find('div', class_ = 'description mw-content-ltr en'):
-            description_list.append(image.text.strip())
+        for image in images_div.find('div', class_ = 'description mw-content-ltr en').text:
+            description_list.append(image[1])         
     except:
-        images_description_2part = soup_images.find('td', class_ = 'description').text
-        description_list.append(images_description_2part)
-    print(description_list)
+        images_description_2part = soup_images.find('td', class_ = 'description')
+        description_list.append(images_description_2part.text)
 
 
 # Lisens of images
-r_images_licens = requests.get(images_url)
-soup_licens = BeautifulSoup(r_images_licens.text, 'lxml')  
-images_lincens = soup_licens.find(class_ = 'rlicense-declaration').text
+    try:
+        r_images_licens = requests.get(images_url)
+        soup_licens = BeautifulSoup(r_images_licens.text, 'lxml')  
+        images_lincens = soup_licens.find(class_ = 'rlicense-declaration').find('a', class_ = 'extiw').text
+        print(images_lincens)
+    except:
+        pass
 
 
 # Taking all information about event from API
