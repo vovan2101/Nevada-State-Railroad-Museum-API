@@ -58,12 +58,11 @@ for end_point in end_points:
         description_list.append(images_description_2part.text)
 
 
-# Lisens of images
+# Licens of images
     try:
         r_images_licens = requests.get(images_url)
         soup_licens = BeautifulSoup(r_images_licens.text, 'lxml')  
         images_lincens = soup_licens.find(class_ = 'rlicense-declaration').find('a', class_ = 'extiw').text
-        print(images_lincens)
     except:
         pass
 
@@ -91,9 +90,11 @@ all_info = {
     'address2' : address_2,
     'wikipedia' : url_wikipedia,
     'experience_description' : paragraph,
+    'images' : {
     'images_licens' : images_lincens,
     'images_description' : description_list,
     'experience_images' : list_images,
+    }
 }
 
 with open('all_info_json', 'w') as file:
