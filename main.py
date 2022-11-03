@@ -47,15 +47,19 @@ for end_point in end_points:
 
     r_images = requests.get(images_url)
     soup_images = BeautifulSoup(r_images.text, 'lxml')
-    description_list = []
 
+    description_list = []
     try:
         images_div = soup_images.find('td', class_ = 'description')
-        for image in images_div.find('div', class_ = 'description mw-content-ltr en').text:
-            description_list.append(image[1])         
+        for image in images_div.find('div', class_ = 'description mw-content-ltr en'):
+            description_part1 = image.text.strip()
+            description_list.append(description_part1)
+            print(description_part1)
     except:
         images_description_2part = soup_images.find('td', class_ = 'description')
-        description_list.append(images_description_2part.text)
+        description_part2 = images_description_2part.text.strip()
+        description_list.append(description_part2)
+        print(description_part2)
 
 
 # Licens of images
