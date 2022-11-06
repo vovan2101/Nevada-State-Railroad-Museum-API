@@ -31,6 +31,7 @@ city = data['addresstags']['city']
 state = data['addresstags']['state']
 zip = data['addresstags']['postcode']
 wikipedia_name = data['calculated_wikipedia'][2:]
+wikidata = data['extratags']['wikidata']
 
 
 # Taking first paragraph from wikipedia if more then 50 elements, else taking two paragraphs
@@ -45,6 +46,12 @@ try:
     experience_description = f'{paragraph1}\n\n{paragraph2}'
 except:
     experience_description = paragraph1
+
+
+# Website, phonenumber and socialmedia from wikidata
+wikidata_url = requests.get(f'https://m.wikidata.org/wiki/Special:EntityData/{wikidata}.json?')
+data_wikidata = json.loads(wikidata_url.text)
+
 
 
 # All event images links
@@ -105,5 +112,3 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
 
     with open('all_info_json', 'w') as file:
         json.dump(all_info, file, indent=4, ensure_ascii=False)
-
-    print(all_info)
