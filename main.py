@@ -57,10 +57,14 @@ try:
     phone_number = data_wikidata['entities'][f'{wikidata}']['claims']['P1329'][0]['mainsnak']['datavalue']['value']
     twitter_id = data_wikidata['entities'][f'{wikidata}']['claims']['P8687'][0]['qualifiers']['P6552'][0]['datavalue']['value']
     twitter = f'https://twitter.com/i/user/{twitter_id}'
-except Exception:
+except:
+    website = data_wikidata['entities'][f'{wikidata}']['claims']['P856'][0]['mainsnak']['datavalue']['value']
+    phone_number = None
+    twitter = None
+else:
     website = None
     phone_number = None
-    twitter_id = None
+    twitter = None
 
 
 # All event images links
