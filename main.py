@@ -10,7 +10,6 @@ city = str(input('Please enter city name: '))
 print()
 event_name = str(input('Please enter an event name: '))
 print()
-search = f'https://nominatim.openstreetmap.org/ui/search.html?q={state}+{city}+{event_name}'
 
 
 # Taking osm id of event, to get more data about event
@@ -88,21 +87,23 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
     images_info = f'{images_links} - {description_images} - {images_license}'
     images_info_list.append(images_info)
 
-
+ 
 # All data about event
-all_info = {
-    'place_id' : place_id,
-    'category' : category,
-    'experience_name': experience_name,
-    'city' : city,
-    'state' : state,
-    'zip': zip,
-    'address1': address_1,
-    'address2' : address_2,
-    'wikipedia_name' : wikipedia,
-    'experience_description' : experience_description,
-    'all_images_info' : images_info_list,
-}
+    all_info = {
+        'place_id' : place_id,
+        'category' : category,
+        'experience_name': experience_name,
+        'city' : city,
+        'state' : state,
+        'zip': zip,
+        'address1': address_1,
+        'address2' : address_2,
+        'wikipedia_name' : wikipedia,
+        'experience_description' : experience_description,
+        'all_images_info' : images_info_list,
+    }
 
-with open('all_info_json', 'w') as file:
-    json.dump(all_info, file, indent=4, ensure_ascii=False)
+    with open('all_info_json', 'w') as file:
+        json.dump(all_info, file, indent=4, ensure_ascii=False)
+
+    print(all_info)
