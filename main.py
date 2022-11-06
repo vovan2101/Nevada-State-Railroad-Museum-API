@@ -52,6 +52,15 @@ except:
 wikidata_url = requests.get(f'https://m.wikidata.org/wiki/Special:EntityData/{wikidata}.json?')
 data_wikidata = json.loads(wikidata_url.text)
 
+try:
+    website = data_wikidata['entities'][f'{wikidata}']['claims']['P856'][0]['mainsnak']['datavalue']['value']
+    phone_number = data_wikidata['entities'][f'{wikidata}']['claims']['P1329'][0]['mainsnak']['datavalue']['value']
+    twitter_id = data_wikidata['entities'][f'{wikidata}']['claims']['P8687'][0]['qualifiers']['P6552'][0]['datavalue']['value']
+    twitter = f'https://twitter.com/i/user/{twitter_id}'
+except Exception:
+    website = None
+    phone_number = None
+    twitter_id = None
 
 
 # All event images links
@@ -108,7 +117,12 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
         'wikipedia_name' : wikipedia,
         'experience_description' : experience_description,
         'all_images_info' : images_info_list,
+        'website' : website,
+        'phone_number' : phone_number,
+        'twitter' : twitter,
     }
 
-    with open('all_info_json', 'w') as file:
-        json.dump(all_info, file, indent=4, ensure_ascii=False)
+    # with open('all_info_json', 'w') as file:
+    #     json.dump(all_info, file, indent=4, ensure_ascii=False)
+
+    print(twitter)
