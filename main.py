@@ -1,4 +1,3 @@
-from doctest import Example
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -22,6 +21,7 @@ osm_id = osm_id_data[0]['osm_id']
 # All data from json page
 advanced_search_json = requests.get(f'https://nominatim.openstreetmap.org/details.php?osmtype=W&osmid={osm_id}&format=json')
 data = json.loads(advanced_search_json.text)
+
 
 place_id = data['place_id']
 category = data['category']
@@ -104,6 +104,7 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
     images_info_list.append(images_info)
     print(images_info_list)
 
+
 # All data about event
 all_info = {
     'place_id' : place_id,
@@ -122,5 +123,9 @@ all_info = {
     'all_images_info' : images_info_list,
 }
 
+print(all_info)
+
+
+# Saving in JSON file
 with open('all_info_json', 'w') as file:
     json.dump(all_info, file, indent=4, ensure_ascii=False)
