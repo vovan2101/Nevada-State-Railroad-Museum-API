@@ -85,12 +85,6 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
         description_wikimedia = soup_description.find('tbody').find('td', class_ = 'description').find('div', class_ = 'description mw-content-ltr en')
         for description in description_wikimedia:
                 description_images = description.text.strip()
-    except TypeError:
-        print(None)
-        continue
-    except AttributeError:
-        print(None)
-        continue
     except Exception:
         description_wikimedia = soup_description.find('tbody').find('td', class_ = 'description')
         for description in description_wikimedia:
@@ -98,41 +92,35 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
 
 
 # Images license
-    soup_license = BeautifulSoup(images_description_url.text, 'lxml')
-    try:
-        license_wikimedia = soup_license.find('div', class_ = 'rlicense-declaration')
-        for license in license_wikimedia.find('a'):
-            images_license = license
-    except Exception:
-        license_wikimedia = soup_license.find('tbody')
-        for license in license_wikimedia.find('a'):
-            images_license = license
+    soup_license = BeautifulSoup(images_description_url.text, 'lxml') 
+    license_wikimedia = soup_license.find('footer').find('ul').find('li', {'id': 'footer-info-copyright'})
+    for license in license_wikimedia.find('a'):
+        images_license = license
 
 
 # All images information together
     images_info_list = []
     images_info = f'Image: {images_links} | description: {description_images} | license: {images_license}'
     images_info_list.append(images_info)
-
+    print(images_info_list)
 
 # All data about event
-    all_info = {
-        'place_id' : place_id,
-        'category' : category,
-        'experience_name': experience_name,
-        'city' : city,
-        'state' : state,
-        'zip': zip,
-        'address1': address_1,
-        'address2' : address_2,
-        'wikipedia_name' : wikipedia,
-        'experience_description' : experience_description,
-        'website' : website,
-        'phone_number' : phone_number,
-        'twitter' : twitter,
-        'all_images_info' : images_info_list,
-    }
+all_info = {
+    'place_id' : place_id,
+    'category' : category,
+    'experience_name': experience_name,
+    'city' : city,
+    'state' : state,
+    'zip': zip,
+    'address1': address_1,
+    'address2' : address_2,
+    'wikipedia_name' : wikipedia,
+    'experience_description' : experience_description,
+    'website' : website,
+    'phone_number' : phone_number,
+    'twitter' : twitter,
+    'all_images_info' : images_info_list,
+}
 
 with open('all_info_json', 'w') as file:
     json.dump(all_info, file, indent=4, ensure_ascii=False)
-
