@@ -95,7 +95,6 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
         description_wikimedia = soup_description.find('tbody').find('td', class_ = 'description')
         for description in description_wikimedia:
             description_images = description.text.strip()
-    print(description_images)
 
 
 # Images license
@@ -112,7 +111,7 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
 
 # All images information together
     images_info_list = []
-    images_info = f'{images_links} - {description_images} - {images_license}'
+    images_info = f'Image: {images_links} | description: {description_images} | license: {images_license}'
     images_info_list.append(images_info)
 
 
