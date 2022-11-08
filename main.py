@@ -91,6 +91,14 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
             description_images = description.text.strip()
 
 
+# Images author
+    images_author_url = requests.get(f'https://commons.wikimedia.org{images_title}')
+    soup_author = BeautifulSoup(images_author_url.text, 'lxml')
+    author_wikimedia = soup_author.find('tbody').find_all('tr')[3].find_all('td')[1]
+    for image_author in author_wikimedia.find_all('a'):
+        author_link = image_author.get('href')
+
+
 # Images license
     soup_license = BeautifulSoup(images_description_url.text, 'lxml') 
     license_wikimedia = soup_license.find('footer').find('ul').find('li', {'id': 'footer-info-copyright'})
@@ -100,7 +108,7 @@ for image in images_wikimedia.find_all('li', class_ = 'gallerybox'):
 
 # All images information together
     images_info_list = []
-    images_info = f'Image: {images_links} | description: {description_images} | license: {images_license}'
+    images_info = f'Image: {images_links} | description: {description_images} | license: {images_license} | author: {author_link}'
     images_info_list.append(images_info)
     print(images_info_list)
 
